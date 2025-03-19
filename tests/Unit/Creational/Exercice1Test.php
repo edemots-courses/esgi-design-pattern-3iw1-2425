@@ -22,11 +22,11 @@ final class Exercice1Test extends TestCase
         $this->assertSame($expectedSpeed, $car->accelerate());
     }
 
-    public function testCarBreaks()
+    public function testCarBrakes()
     {
         $car = new Car();
         $car->accelerate();
-        $this->assertEquals(0, $car->breaks());
+        $this->assertEquals(0, $car->brakes());
     }
 
     public function testCarIsVehicle()
@@ -48,11 +48,11 @@ final class Exercice1Test extends TestCase
         $this->assertSame($expectedSpeed, $truck->accelerate());
     }
 
-    public function testTruckBreaks()
+    public function testTruckBrakes()
     {
         $truck = new Truck();
         $truck->accelerate();
-        $this->assertEquals(0, $truck->breaks());
+        $this->assertEquals(0, $truck->brakes());
     }
 
     public function testTruckIsVehicle()

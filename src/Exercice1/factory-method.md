@@ -12,13 +12,13 @@ Modifiez la classe `Car` en ajoutant une propriété public `speed` de type `flo
 
 Ajoutez une méthode `accelerate` qui permet de faire avancer le véhicule. La voiture accélère de 3,5 m/s, la vitesse de la voiture doit donc augmenter de 3,5 m/s à chaque fois que la méthode `accelerate` est appelée.
 
-Ajoutez une méthode `breaks` qui permet de faire freiner le véhicule. La voiture freine de 5 m/s, la vitesse de la voiture doit donc diminuer de 5 m/s à chaque fois que la méthode `breaks` est appelée. La vitesse ne peut pas être négative.
+Ajoutez une méthode `brakes` qui permet de faire freiner le véhicule. La voiture freine de 5 m/s, la vitesse de la voiture doit donc diminuer de 5 m/s à chaque fois que la méthode `brakes` est appelée. La vitesse ne peut pas être négative.
 
 ### 2.
 
-Créez une interface `Vehicule` qui définit une méthode public `accelerate` qui devra retourner la vitesse actuelle du véhicule ainsi qu'une méthode public `breaks` qui devra aussi retourner la vitesse actuelle de véhicule.
+Créez une interface `Vehicle` qui définit une méthode public `accelerate` qui devra retourner la vitesse actuelle du véhicule ainsi qu'une méthode public `brakes` qui devra aussi retourner la vitesse actuelle de véhicule.
 
-Faites en sorte que votre classe `Car` implémente sans erreur l'interface `Vehicule`.
+Faites en sorte que votre classe `Car` implémente sans erreur l'interface `Vehicle`.
 
 ### 3.
 
