@@ -2,17 +2,17 @@
 
 namespace EdemotsCourses\EsgiDesignPattern\Exercice1;
 
-class Car extends AbstractVehicle
+class Truck extends AbstractVehicle
 {
     public function accelerate(): float
     {
-        $this->speed += 3.5;
+        $this->speed += 1.75;
         return $this->speed;
     }
 
     public function brakes(): float
     {
-        $this->speed -= 5.0;
+        $this->speed -= 2;
         return parent::brakes();
     }
 }
