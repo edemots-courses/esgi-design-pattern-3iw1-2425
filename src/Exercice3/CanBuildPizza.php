@@ -6,6 +6,7 @@ interface CanBuildPizza
 {
     public function reset(): self;
 
+
     public function setSize(string $size): self;
 
     public function small(): self;
@@ -37,6 +38,7 @@ interface CanBuildPizza
     public function light(): self;
     public function normal(): self;
     public function wellDone(): self;
+
 
     public function build(): Pizza;
 }

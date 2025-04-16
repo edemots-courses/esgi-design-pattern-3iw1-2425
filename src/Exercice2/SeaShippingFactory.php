@@ -1,5 +1,6 @@
 <?php
 
+
 namespace EdemotsCourses\EsgiDesignPattern\Exercice2;
 
 class SeaShippingFactory extends AbstractShippingFactory
@@ -9,3 +10,4 @@ class SeaShippingFactory extends AbstractShippingFactory
         return new SeaShipping();
     }
 }
+

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace EdemotsCourses\EsgiDesignPattern\Exercice2;
 
 class AirShippingFactory extends AbstractShippingFactory
@@ -9,3 +10,4 @@ class AirShippingFactory extends AbstractShippingFactory
         return new AirShipping();
     }
 }
+

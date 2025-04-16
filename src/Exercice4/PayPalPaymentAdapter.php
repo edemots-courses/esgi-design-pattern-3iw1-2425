@@ -22,6 +22,7 @@ class PayPalPaymentAdapter implements LegacyPaymentProcessor
             'payment_details' => $paymentDetails,
         ]);
 
+
         return [
             'transaction_id' => $result['payment_id'],
             'status' => $result['state'] === 'approved' ? 'success' : 'failed',
@@ -42,3 +43,4 @@ class PayPalPaymentAdapter implements LegacyPaymentProcessor
         return $this->paypalGateway->refund($transactionId)->state === 'completed';
     }
 }
+

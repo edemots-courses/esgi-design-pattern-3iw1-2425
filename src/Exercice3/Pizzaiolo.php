@@ -10,7 +10,6 @@ class Pizzaiolo
     {
         $this->builder = $builder;
     }
-
     public function buildMargherita()
     {
         return $this->builder
@@ -49,5 +48,6 @@ class Pizzaiolo
             ->addTopping('spinach')
             ->light()
             ->build();
+
     }
 }

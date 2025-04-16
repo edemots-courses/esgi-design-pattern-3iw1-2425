@@ -2,6 +2,7 @@
 
 namespace EdemotsCourses\EsgiDesignPattern\Exercice1;
 
+
 class Car extends AbstractVehicle
 {
     public function accelerate(): float

@@ -25,3 +25,4 @@ class SeaShipping implements ShippingMethod
         return "SEA-{$trackingNumber}";
     }
 }
+

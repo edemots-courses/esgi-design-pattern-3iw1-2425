@@ -22,6 +22,7 @@ class StripePaymentAdapter implements LegacyPaymentProcessor
             'payment_details' => $paymentDetails,
         ]);
 
+
         return [
             'transaction_id' => $result['id'],
             'status' => $result['status'] === 'succeeded' ? 'success' : 'failed',
@@ -49,3 +50,4 @@ class StripePaymentAdapter implements LegacyPaymentProcessor
         return $this->stripeGateway->refund($transactionId)->status === 'refunded';
     }
 }
+

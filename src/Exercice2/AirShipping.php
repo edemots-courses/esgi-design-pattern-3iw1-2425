@@ -25,3 +25,4 @@ class AirShipping implements ShippingMethod
         return "AIR-{$trackingNumber}";
     }
 }
+

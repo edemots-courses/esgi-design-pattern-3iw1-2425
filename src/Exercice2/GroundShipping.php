@@ -1,3 +1,4 @@
+
 <?php
 
 namespace EdemotsCourses\EsgiDesignPattern\Exercice2;
@@ -25,3 +26,4 @@ class GroundShipping implements ShippingMethod
         return "GRD-{$trackingNumber}";
     }
 }
+
