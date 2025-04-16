@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 class PaypalPaymentAdapter implements LegacyPaymentProcessor {
 
-    private PayPalGateway $gateway;
+    protected PayPalGateway $gateway;
 
     public function __construct(PayPalGateway $gateway)
     {
@@ -25,8 +25,8 @@ class PaypalPaymentAdapter implements LegacyPaymentProcessor {
             'amount' => $amount,
             'currency' => $currency,
             [
-                'email' => $paymentDetails['email'],
-                'paypal_token' => $paymentDetails['paypal_token']
+                'email' => $paymentDetails['email'] ?? "",
+                'paypal_token' => $paymentDetails['paypal_token'] ?? ""
             ]
         ];
         $result = $this->gateway->charge($array);
@@ -35,7 +35,7 @@ class PaypalPaymentAdapter implements LegacyPaymentProcessor {
             'status' => $result['state'] === 'approved' ? 'success' : 'failed',
             'amount' => $result['amount']['total'],
             'currency' => $result['amount']['currency'],
-            'timestamp' => $result['create_time']
+            'timestamp' => strtotime($result['create_time'])
         ];
     }
 

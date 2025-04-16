@@ -6,7 +6,7 @@ use WpOrg\Requests\Exception\InvalidArgument;
 
 class StripePaymentAdapter implements LegacyPaymentProcessor {
     
-    private StripeGateway $gateway;
+    protected StripeGateway $gateway;
 
     public function __construct(StripeGateway $gateway)
     {
@@ -25,10 +25,10 @@ class StripePaymentAdapter implements LegacyPaymentProcessor {
             'amount' => $amount,
             'currency' => $currency,
             [
-                'card_number' => $paymentDetails['card_number'],
-                'expiry_month' => $paymentDetails['expiry_month'],
-                'expiry_year' => $paymentDetails['expiry_year'],
-                'cvv' => $paymentDetails['cvv']
+                'card_number' => $paymentDetails['card_number'] ?? "",
+                'expiry_month' => $paymentDetails['expiry_month'] ?? "",
+                'expiry_year' => $paymentDetails['expiry_year'] ?? "",
+                'cvv' => $paymentDetails['cvv'] ?? ""
             ]
         ];
         $result =  $this->gateway->charge($payment);
@@ -37,7 +37,7 @@ class StripePaymentAdapter implements LegacyPaymentProcessor {
             'status' => $result['status'] === 'succeeded' ? 'success' : 'failed',
             'amount' => $result['amount'],
             'currency' => $result['currency'],
-            'timestamp' => $result['created']
+            'timestamp' => strtotime($result['created'])
         ];
     }
 
