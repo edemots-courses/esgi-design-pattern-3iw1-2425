@@ -10,7 +10,17 @@ Créez des adaptateurs pour deux passerelles de paiement modernes (Stripe et Pay
 
 ### Pré-requis
 
-Maintenir l'interface existante `LegacyPaymentProcessor`.
+Maintenir l'interface existante `LegacyPaymentProcessor`. Le résultat attendu de la méthode `processPayment` doit être sous la forme :
+
+```php
+[
+    'transaction_id' => string,
+    'status' => 'success'|'failed',
+    'amount' => float,
+    'currency' => string,
+    'timestamp' => int,
+]
+```
 
 Créer des adaptateurs pour :
 - Passerelle de paiement Stripe
@@ -22,6 +32,64 @@ Prise en charge de différentes méthodes de paiement :
 - Virement bancaire
 
 ### Règles métier
+
+#### Paypal
+
+Considérant que nous utilisons un package qui intéragit avec l'API de Paypal, voici les données attendues et retournées par la méthode `charge` :
+
+Entrée
+```php
+[
+    'amount' => float,
+    'currency' => string,
+    'payment_details' => [
+        'email' => string,
+        'paypal_token' => string,
+    ],
+]
+```
+
+Sortie
+```php
+[
+    'payment_id' => string,
+    'state' => 'approved',
+    'amount' => [
+        'total' => float,
+        'currency' => string
+    ],
+    'create_time' => string
+]
+```
+
+#### Stripe
+
+Considérant que nous utilisons un package qui intéragit avec l'API de Stripe, voici les données attendues et retournées par la méthode `charge` :
+
+Entrée
+```php
+[
+    'amount' => float,
+    'currency' => string,
+    'payment_details' => [
+        'card_number' => string,
+        'expiry_month' => string,
+        'expiry_year' => string,
+        'cvv' => string,
+    ],
+]
+```
+
+Sortie
+```php
+[
+    'id' => 'string',
+    'status' => 'succeeded',
+    'amount' => float,
+    'currency' => string,
+    'created' => int
+]
+```
 
 #### Traitement des paiements
 - Doit valider le montant du paiement (> 0)

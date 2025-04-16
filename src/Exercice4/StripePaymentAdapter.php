@@ -1,55 +1,53 @@
 <?php
+
 namespace EdemotsCourses\EsgiDesignPattern\Exercice4;
 
 use InvalidArgumentException;
-use WpOrg\Requests\Exception\InvalidArgument;
 
-class StripePaymentAdapter implements LegacyPaymentProcessor {
-    
-    protected StripeGateway $gateway;
-
-    public function __construct(StripeGateway $gateway)
-    {
-        $this->gateway = $gateway;
-    }
+class StripePaymentAdapter implements LegacyPaymentProcessor
+{
+    public function __construct(
+        protected StripeGateway $stripeGateway
+     ) {}
 
     public function processPayment(float $amount, string $currency, array $paymentDetails): array
     {
-        if (!$amount || $amount <= 0) {
-            throw new InvalidArgumentException('Veuillez fournir un montant valide');
+        if ($amount <= 0) {
+            throw new InvalidArgumentException("Le montant ne peux pas être négatif ou nul.");
         }
-        if (!$currency) {
-            throw new InvalidArgumentException('Veuillez fournir une currency valide');
-        }
-        $payment = [
+
+        $result = $this->stripeGateway->charge([
             'amount' => $amount,
             'currency' => $currency,
-            [
-                'card_number' => $paymentDetails['card_number'] ?? "",
-                'expiry_month' => $paymentDetails['expiry_month'] ?? "",
-                'expiry_year' => $paymentDetails['expiry_year'] ?? "",
-                'cvv' => $paymentDetails['cvv'] ?? ""
-            ]
-        ];
-        $result =  $this->gateway->charge($payment);
+            'payment_details' => $paymentDetails,
+        ]);
+
+
         return [
             'transaction_id' => $result['id'],
             'status' => $result['status'] === 'succeeded' ? 'success' : 'failed',
             'amount' => $result['amount'],
             'currency' => $result['currency'],
-            'timestamp' => strtotime($result['created'])
+            'timestamp' => $result['created'],
         ];
     }
 
     public function getPaymentStatus(string $transactionId): string
     {
-        $result = $this->gateway->verifyPayment($transactionId);
-        return $result->status === 'succeeded' ? 'success' : 'failed';
+        return $this->stripeGateway->verifyPayment($transactionId)->status === 'succeeded'
+            ? 'success'
+            : 'failed';
+
+        // if ($result->status === 'succeeded') {
+        //     return 'success';
+        // }
+        // return 'failed';
+        // return $result->status === 'succeeded' ? 'success' : 'failed';
     }
 
-    public function refundPayment(string $transactionId): bool 
+    public function refundPayment(string $transactionId): bool
     {
-        $result = $this->gateway->refund($transactionId);
-        return $result->status === 'refunded' ? true : false;
+        return $this->stripeGateway->refund($transactionId)->status === 'refunded';
     }
 }
+

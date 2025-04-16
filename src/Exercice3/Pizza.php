@@ -4,60 +4,67 @@ namespace EdemotsCourses\EsgiDesignPattern\Exercice3;
 
 class Pizza
 {
-    private string $size = '';
-    private string $crustType = '';
-    private ?string $sauce = null;
-    private ?array $cheeses = [];
-    private ?array $toppings = [];
-    private ?string $cookigInstructions = null;
+    // protected string $size;
+    // protected string $crustType;
+    // protected string $sauce;
+    // protected array $cheeses = [];
+    // protected array $toppings = [];
+    // protected string $cookingInstructions;
 
-    public function getSize() {
+    // public function __construct(
+    //     string $size,
+    //     string $crustType,
+    //     string $sauce,
+    //     array $cheeses = [],
+    //     array $toppings = [],
+    //     string $cookingInstructions,
+    // )
+    // {
+    //     $this->size = $size;
+    //     $this->crustType = $crustType;
+    //     $this->sauce = $sauce;
+    //     $this->cheeses = $cheeses;
+    //     $this->toppings = $toppings;
+    //     $this->cookingInstructions = $cookingInstructions;
+    // }
+
+    public function __construct(
+        protected string $size,
+        protected string $crustType,
+        protected string $sauce,
+        protected string $cookingInstructions,
+        protected array $cheeses = [],
+        protected array $toppings = [],
+    ) {}
+
+    public function getSize(): string
+    {
         return $this->size;
     }
 
-    public function setSize($size)
+    public function getCrustType(): string
     {
-        $this->size = $size;
-    }
-
-    public function getCrustType() {
         return $this->crustType;
     }
 
-    public function setCrustType($crustType) {
-        $this->crustType = $crustType;
-    }
-
-    public function getSauce() {
+    public function getSauce(): string
+    {
         return $this->sauce;
     }
 
-    public function setSauce($sauce)
+    public function getCheeses(): array
     {
-        $this->sauce = $sauce;
-    }
-
-    public function getCheeses() {
         return $this->cheeses;
     }
 
-    public function setCheeses($cheese) {
-        array_push($this->cheeses, $cheese);
-    }
-
-    public function getToppings() {
+    public function getToppings(): array
+    {
         return $this->toppings;
     }
 
-    public function setToppings($topping) {
-        array_push($this->toppings, $topping);
-    }
+    public function getCookingInstructions(): string
+    {
+        return $this->cookingInstructions;
 
-    public function getCookingInstructions() {
-        return $this->cookigInstructions;
-    }
-
-    public function setCookingInstructions($cookingInstructions) {
-        $this->cookigInstructions = $cookingInstructions;
     }
 }

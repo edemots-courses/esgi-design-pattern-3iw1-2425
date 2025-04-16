@@ -1,23 +1,28 @@
 <?php
+
 namespace EdemotsCourses\EsgiDesignPattern\Exercice2;
 
-class AirShipping implements ShippingMethod {
-    private float $base_tarif = 50;
-    private float $cost_by_km = 2;
-    private float $cost_by_kg = 3;
-    private array $shipping_time = [1,2];
-    public function calculateCost(float $weight, float $distance): float {
-        $result = $this->base_tarif;
-        $result += $distance * $this->cost_by_km;
-        $result += $weight * $this->cost_by_kg;
+class AirShipping implements ShippingMethod
+{
+    private const BASE_COST = 50;
+    private const COST_PER_KM = 2;
+    private const COST_PER_KG = 3;
 
-        return $result;
+    public function calculateCost(float $weight, float $distance): float
+    {
+        return self::BASE_COST + $distance * self::COST_PER_KM + $weight * self::COST_PER_KG;
     }
 
-    public function getEstimatedDays(): array {
-        return $this->shipping_time;
+    public function getEstimatedDays(): array
+    {
+        return [1, 2];
     }
-    public function formatTracking(string $trackingNumber): string {
-        return "AIR-" . $trackingNumber;
+
+    public function formatTracking(string $trackingNumber): string
+    {
+        // return sprintf("AIR-%s", $trackingNumber);
+        // return 'AIR-'.$trackingNumber;
+        return "AIR-{$trackingNumber}";
     }
 }
+

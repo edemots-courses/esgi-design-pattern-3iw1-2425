@@ -10,22 +10,44 @@ class Pizzaiolo
     {
         $this->builder = $builder;
     }
-
-    public function buildMargherita() 
+    public function buildMargherita()
     {
-        $pizza = $this->builder->reset()->setSize('medium')->setCrustType('regular')->setSauce('tomato')->addCheese('mozzarella')->setCookingInstructions('normal')->build();
-        return $pizza;
+        return $this->builder
+            ->reset()
+            ->medium()
+            ->regular()
+            ->tomato()
+            ->addMozzarella()
+            ->build();
     }
 
-    public function buildPepperoni() 
+    public function buildPepperoni()
     {
-        $pizza = $this->builder->setSize('medium')->setCrustType('regular')->setSauce('tomato')->addCheese('mozzarella')->addTopping('pepperoni')->setCookingInstructions('normal')->build();
-        return $pizza;
+        return $this->builder
+            ->reset()
+            ->medium()
+            ->regular()
+            ->tomato()
+            ->addMozzarella()
+            ->addTopping('pepperoni')
+            ->build();
     }
 
-    public function buildVegetarian() 
+    public function buildVegetarian()
     {
-        $pizza = $this->builder->setSize('medium')->setCrustType('thin')->setSauce('tomato')->addCheese('mozzarella')->addCheese('cheddar')->addTopping('vegetables')->setCookingInstructions('light')->build();
-        return $pizza;
+        return $this->builder
+            ->reset()
+            ->medium()
+            ->thin()
+            ->tomato()
+            ->mixedCheese()
+            ->addTopping('olives')
+            ->addTopping('bell peppers')
+            ->addTopping('onions')
+            ->addTopping('mushrooms')
+            ->addTopping('spinach')
+            ->light()
+            ->build();
+
     }
 }

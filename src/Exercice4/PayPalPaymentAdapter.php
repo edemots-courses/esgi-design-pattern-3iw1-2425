@@ -1,53 +1,46 @@
 <?php
+
 namespace EdemotsCourses\EsgiDesignPattern\Exercice4;
 
 use InvalidArgumentException;
 
-class PaypalPaymentAdapter implements LegacyPaymentProcessor {
-
-    protected PayPalGateway $gateway;
-
-    public function __construct(PayPalGateway $gateway)
-    {
-        $this->gateway = $gateway;
-    }
+class PayPalPaymentAdapter implements LegacyPaymentProcessor
+{
+    public function __construct(
+        protected PayPalGateway $paypalGateway
+     ) {}
 
     public function processPayment(float $amount, string $currency, array $paymentDetails): array
     {
-        if (!$amount || $amount <= 0) {
-            throw new InvalidArgumentException('Veuillez fournir un montant valide');
+        if ($amount <= 0) {
+            throw new InvalidArgumentException("Le montant ne peux pas être négatif ou nul.");
         }
-        if (!$currency) {
-            throw new InvalidArgumentException('Veuillez fournir une currency valide');
-        }
-        
-        $array = [
+
+        $result = $this->paypalGateway->charge([
             'amount' => $amount,
             'currency' => $currency,
-            [
-                'email' => $paymentDetails['email'] ?? "",
-                'paypal_token' => $paymentDetails['paypal_token'] ?? ""
-            ]
-        ];
-        $result = $this->gateway->charge($array);
+            'payment_details' => $paymentDetails,
+        ]);
+
+
         return [
             'transaction_id' => $result['payment_id'],
             'status' => $result['state'] === 'approved' ? 'success' : 'failed',
             'amount' => $result['amount']['total'],
             'currency' => $result['amount']['currency'],
-            'timestamp' => strtotime($result['create_time'])
+            'timestamp' => strtotime($result['create_time']),
         ];
     }
 
     public function getPaymentStatus(string $transactionId): string
     {
-        $result = $this->gateway->verifyPayment($transactionId);
-        return $result->state === 'approved' ? 'success' : 'failed';
+        return $this->paypalGateway->verifyPayment($transactionId)->state === 'approved'
+            ? 'success'
+            : 'failed';
     }
 
-    public function refundPayment(string $transactionId): bool 
-    {
-        $result = $this->gateway->refund($transactionId);
-        return $result->state  === 'completed' ? true : false;
+    public function refundPayment(string $transactionId): bool{
+        return $this->paypalGateway->refund($transactionId)->state === 'completed';
     }
 }
+

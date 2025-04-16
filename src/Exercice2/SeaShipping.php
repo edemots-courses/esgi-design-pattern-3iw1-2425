@@ -2,23 +2,27 @@
 
 namespace EdemotsCourses\EsgiDesignPattern\Exercice2;
 
-class SeaShipping implements ShippingMethod {
-    private float $base_tarif = 30;
-    private float $cost_by_km = 0.3;
-    private float $cost_by_kg = 0.5;
-    private array $shipping_time = [7,14];
-    public function calculateCost(float $weight, float $distance): float {
-        $result = $this->base_tarif;
-        $result += $distance * $this->cost_by_km;
-        $result += $weight * $this->cost_by_kg;
+class SeaShipping implements ShippingMethod
+{
+    private const BASE_COST = 30;
+    private const COST_PER_KM = 0.3;
+    private const COST_PER_KG = 0.5;
 
-        return $result;
+    public function calculateCost(float $weight, float $distance): float
+    {
+        return self::BASE_COST + $distance * self::COST_PER_KM + $weight * self::COST_PER_KG;
     }
 
-    public function getEstimatedDays(): array {
-        return $this->shipping_time;
+    public function getEstimatedDays(): array
+    {
+        return [7, 14];
     }
-    public function formatTracking(string $trackingNumber): string {
-        return "SEA-" . $trackingNumber;
+
+    public function formatTracking(string $trackingNumber): string
+    {
+        // return sprintf("SEA-%s", $trackingNumber);
+        // return 'SEA-'.$trackingNumber;
+        return "SEA-{$trackingNumber}";
     }
 }
+

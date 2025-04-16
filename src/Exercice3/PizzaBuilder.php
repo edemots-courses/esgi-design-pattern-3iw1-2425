@@ -2,64 +2,191 @@
 
 namespace EdemotsCourses\EsgiDesignPattern\Exercice3;
 
-use Exception;
+use EdemotsCourses\EsgiDesignPattern\Exercice3\Exceptions\UndefinedCrustTypeException;
+use EdemotsCourses\EsgiDesignPattern\Exercice3\Exceptions\UndefinedSizeException;
+
 use LogicException;
 
 class PizzaBuilder implements CanBuildPizza
 {
-    private Pizza $pizza;
+    protected string $size;
+    protected string $crustType;
+    protected string $sauce;
+    protected array $cheeses = [];
+    protected array $toppings = [];
+    protected string $cookingInstructions = 'normal';
 
-    public function __construct() {
-        $this->pizza = new Pizza;
-    }
-    public function setSize(string $size): PizzaBuilder {
-        $this->pizza->setSize($size);
+    public function setSize(string $size): CanBuildPizza
+    {
+        $this->size = $size;
         return $this;
     }
 
-    public function setCrustType(string $crust): PizzaBuilder {
-        $this->pizza->setCrustType($crust);
+    public function small(): CanBuildPizza
+    {
+        return $this->setSize('small');
+    }
+
+    public function medium(): CanBuildPizza
+    {
+        return $this->setSize('medium');
+    }
+
+    public function large(): CanBuildPizza
+    {
+        return $this->setSize('large');
+    }
+
+    public function setCrustType(string $crustType): CanBuildPizza
+    {
+        $this->crustType = $crustType;
         return $this;
     }
 
-    public function setSauce(string $sauce): PizzaBuilder {
-        $this->pizza->setSauce($sauce);
+    public function thin(): CanBuildPizza
+    {
+        return $this->setCrustType('thin');
+    }
+
+    public function regular(): CanBuildPizza
+    {
+        return $this->setCrustType('regular');
+    }
+
+    public function thick(): CanBuildPizza
+    {
+        return $this->setCrustType('thick');
+    }
+
+    public function setSauce(string $sauce): CanBuildPizza
+    {
+        $this->sauce = $sauce;
         return $this;
     }
 
-    public function addCheese(string $cheese): PizzaBuilder {
-        $this->pizza->setCheeses($cheese);
+    public function tomato(): CanBuildPizza
+    {
+        return $this->setSauce('tomato');
+    }
+
+    public function bbq(): CanBuildPizza
+    {
+        return $this->setSauce('bbq');
+    }
+
+    public function white(): CanBuildPizza
+    {
+        return $this->setSauce('white');
+    }
+
+    public function addCheese(string $cheese): CanBuildPizza
+    {
+        $this->cheeses[] = $cheese;
         return $this;
     }
 
-    public function addTopping(string $topping): PizzaBuilder {
-        $this->pizza->setToppings($topping);
+    public function addMozzarella(): CanBuildPizza
+    {
+        return $this->addCheese('mozzarella');
+    }
+
+    public function addCheddar(): CanBuildPizza
+    {
+        return $this->addCheese('cheddar');
+    }
+
+    public function mixedCheese(): CanBuildPizza
+    {
+        $this->addCheese('mozzarella');
+        $this->addCheese('cheddar');
         return $this;
     }
 
-    public function setCookingInstructions(string $cookingInstruction): PizzaBuilder {
-        $this->pizza->setCookingInstructions($cookingInstruction);
-        return $this;
-    }
-
-    public function build(): Pizza {
-        if (sizeof($this->pizza->getCheeses()) < 1) {
-            throw new LogicException("Pas assez de fromage");
+    public function addTopping(string $topping): CanBuildPizza
+    {
+        if (count($this->toppings) >= 8) {
+            throw new LogicException('Cannot add more than 8 toppings.');
         }
-        if (sizeof($this->pizza->getToppings()) > 8) {
-            throw new LogicException("Trop de toppings");
-        }
-        if (!$this->pizza->getSize()) {
-            throw new LogicException("Pas de taille");
-        }
 
-        if (!$this->pizza->getCrustType()) {
-            throw new LogicException("Pas de crust");
-        }
-        return $this->pizza;
+        $this->toppings[] = $topping;
+        return $this;
     }
 
-    public function reset(): self {
+    public function setCookingInstructions(string $instructions): CanBuildPizza
+    {
+        $this->cookingInstructions = $instructions;
+        return $this;
+    }
+
+    public function light(): CanBuildPizza
+    {
+        return $this->setCookingInstructions('light');
+    }
+
+    public function normal(): CanBuildPizza
+    {
+        return $this->setCookingInstructions('normal');
+    }
+
+    public function wellDone(): CanBuildPizza
+    {
+        return $this->setCookingInstructions('well done');
+    }
+
+    public function reset(): CanBuildPizza
+    {
         return new self();
+    }
+
+    public function getSize(): string
+    {
+        return $this->size;
+    }
+
+    public function getCrustType(): string
+    {
+        return $this->crustType;
+    }
+
+    public function getSauce(): string
+    {
+        return $this->sauce;
+    }
+
+    public function getCheeses(): array
+    {
+        return $this->cheeses;
+    }
+
+    public function getToppings(): array
+    {
+        return $this->toppings;
+    }
+
+    public function getCookingInstructions(): string
+    {
+        return $this->cookingInstructions;
+    }
+
+    public function build(): Pizza
+    {
+        if (!isset($this->size)) {
+            throw new UndefinedSizeException();
+        }
+        if (!isset($this->crustType)) {
+            throw new UndefinedCrustTypeException();
+        }
+        if (count($this->cheeses) === 0) {
+            throw new LogicException('At least one cheese must be added.');
+        }
+
+        return new Pizza(
+            $this->size,
+            $this->crustType,
+            $this->sauce,
+            $this->cookingInstructions,
+            $this->cheeses,
+            $this->toppings,
+        );
     }
 }

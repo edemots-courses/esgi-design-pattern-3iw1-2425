@@ -1,24 +1,29 @@
-<?php 
+
+<?php
+
 namespace EdemotsCourses\EsgiDesignPattern\Exercice2;
 
-class GroundShipping implements ShippingMethod {
-    private float $base_tarif = 10;
-    private float $cost_by_km = 0.5;
-    private float $cost_by_kg = 1;
-    private array $shipping_time = [3,5];
-    public function calculateCost(float $weight, float $distance): float {
-        $result = $this->base_tarif;
-        $result += $distance * $this->cost_by_km;
-        $result += $weight * $this->cost_by_kg;
+class GroundShipping implements ShippingMethod
+{
+    private const BASE_COST = 10;
+    private const COST_PER_KM = 0.5;
+    private const COST_PER_KG = 1;
 
-        return $result;
+    public function calculateCost(float $weight, float $distance): float
+    {
+        return self::BASE_COST + $distance * self::COST_PER_KM + $weight * self::COST_PER_KG;
     }
 
-    public function getEstimatedDays(): array {
-        return $this->shipping_time;
-    }
-    public function formatTracking(string $trackingNumber): string {
-        return "GRD-" . $trackingNumber;
+    public function getEstimatedDays(): array
+    {
+        return [3, 5];
     }
 
+    public function formatTracking(string $trackingNumber): string
+    {
+        // return sprintf("GRD-%s", $trackingNumber);
+        // return 'GRD-'.$trackingNumber;
+        return "GRD-{$trackingNumber}";
+    }
 }
+
